@@ -1,0 +1,70 @@
+server:
+  port: 8080
+
+spring:
+  main:
+    web-application-type: reactive
+  application:
+    name: 3runner-gateway
+  profiles:
+    default: prod
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders:
+              - "*"
+      routes:
+        - id: auth
+          uri:
+            lb://3RUNNER-AUTH
+          predicates:
+            - Path=/auth/**
+
+        - id: bookstore-image
+          uri: lb://3RUNNER-BOOKSTORE
+          predicates:
+            - Path=/bookstore/images/**
+
+        - id: bookstore
+          uri: lb://3RUNNER-BOOKSTORE
+          predicates:
+            - Path=/bookstore/**
+          filters:
+            - AuthorizationFilter
+
+        - id: coupon
+          uri: lb://3RUNNER-COUPON
+          predicates:
+            - Path=/coupon/**
+
+        - id: prometheus
+          uri: lb://3RUNNER-BOOKSTORE
+          predicates:
+            - Path=/actuator/**
+  jwt:
+    secret: aaaasqwlkljlfasdfqwerafcxvzpojijoijopjewndllllllsserrrrrrwqexc
+
+  data:
+    redis:
+      host: 133.186.241.167
+      port: 6379
+      database: 15
+      password: "*N2vya7H@muDTwdNMR!"
+
+logging:
+  level:
+    root: debug
+
+
+
+

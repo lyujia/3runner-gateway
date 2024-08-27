@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: 3runner-gateway
+  config:
+    activate:
+      on-profile: prod
+
+logging:
+  level:
+    root: debug
+
+eureka:
+  client:
+    fetch-registry: true
+    service-url:
+      defaultZone:
+        http://admin:1234@eureka:8761/eureka
+  instance:
+    prefer-ip-address: true
